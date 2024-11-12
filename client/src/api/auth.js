@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3333/api';
+const API_URL = 'https://stock-analysier.onrender.com';
 
 export const login = async (email, password) => {
     try {
