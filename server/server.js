@@ -20,9 +20,9 @@ mongoose.connect(process.env.MONGODB_URI)
     .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
-    // origin: 'http://localhost:5173',
+    origin: 'https://stock-analysis.yashlunawat.com/',
     // origin: process.env.FRONTEND_URL,
-    origin:true,
+    // origin:true,
     credentials: true
 }));
 
