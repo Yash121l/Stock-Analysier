@@ -1,69 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/stock.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    
-    <!-- Primary Meta Tags -->
-    <title>StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform</title>
-    <meta name="title" content="StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform">
-    <meta name="description" content="Professional-grade stock analysis platform featuring real-time market data, technical indicators, portfolio management, and AI-powered insights for smarter trading decisions." />
-    <meta name="keywords" content="stock analysis, trading platform, market analysis, technical analysis, stock market, trading tools, financial analysis, investment platform" />
-    <meta name="author" content="StockAnalyzer Pro">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="%PUBLIC_URL%" />
-    <meta property="og:title" content="StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform" />
-    <meta property="og:description" content="Professional-grade stock analysis platform featuring real-time market data, technical indicators, portfolio management, and AI-powered insights for smarter trading decisions." />
-    <meta property="og:image" content="%PUBLIC_URL%/stock-social.png" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="%PUBLIC_URL%" />
-    <meta property="twitter:title" content="StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform" />
-    <meta property="twitter:description" content="Professional-grade stock analysis platform featuring real-time market data, technical indicators, portfolio management, and AI-powered insights for smarter trading decisions." />
-    <meta property="twitter:image" content="%PUBLIC_URL%/stock-social.png" />
-    
-    <!-- Mobile App Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="StockAnalyzer Pro">
-    
-    <!-- Icons -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/stock.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    
-    <!-- Preconnect to Important Third-party Services -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="%PUBLIC_URL%" />
-    
-    <!-- Optional: PWA related meta tags -->
-    <meta name="application-name" content="StockAnalyzer Pro">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- Optional: Language alternatives -->
-    <link rel="alternate" href="%PUBLIC_URL%/es" hreflang="es" />
-    <link rel="alternate" href="%PUBLIC_URL%/fr" hreflang="fr" />
-    
-    <!-- Optional: RSS Feed -->
-    <link rel="alternate" type="application/rss+xml" title="StockAnalyzer Pro Market Updates" href="%PUBLIC_URL%/feed.xml">
-  </head>
-  <body>
-    <noscript>
-      <h1>Welcome to StockAnalyzer Pro</h1>
-      <p>You need to enable JavaScript to access our advanced stock analysis platform.</p>
-    </noscript>
-    <div id="root"></div>
-    <!--
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/stock.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Primary Meta Tags -->
+  <title>StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform</title>
+  <meta name="title" content="StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform">
+  <meta name="description"
+    content="Professional-grade stock analysis platform featuring real-time market data, technical indicators, portfolio management, and AI-powered insights for smarter trading decisions." />
+  <meta name="keywords"
+    content="stock analysis, trading platform, market analysis, technical analysis, stock market, trading tools, financial analysis, investment platform" />
+  <meta name="author" content="StockAnalyzer Pro">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="%PUBLIC_URL%" />
+  <meta property="og:title" content="StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform" />
+  <meta property="og:description"
+    content="Professional-grade stock analysis platform featuring real-time market data, technical indicators, portfolio management, and AI-powered insights for smarter trading decisions." />
+  <meta property="og:image" content="%PUBLIC_URL%/stock-social.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="%PUBLIC_URL%" />
+  <meta property="twitter:title" content="StockAnalyzer Pro - Advanced Stock Analysis & Trading Platform" />
+  <meta property="twitter:description"
+    content="Professional-grade stock analysis platform featuring real-time market data, technical indicators, portfolio management, and AI-powered insights for smarter trading decisions." />
+  <meta property="twitter:image" content="%PUBLIC_URL%/stock-social.png" />
+
+  <!-- Mobile App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="StockAnalyzer Pro">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/stock.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+  <!-- Preconnect to Important Third-party Services -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="%PUBLIC_URL%" />
+
+  <!-- Optional: PWA related meta tags -->
+  <meta name="application-name" content="StockAnalyzer Pro">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Optional: Language alternatives -->
+  <link rel="alternate" href="%PUBLIC_URL%/es" hreflang="es" />
+  <link rel="alternate" href="%PUBLIC_URL%/fr" hreflang="fr" />
+
+  <!-- Optional: RSS Feed -->
+  <link rel="alternate" type="application/rss+xml" title="StockAnalyzer Pro Market Updates"
+    href="%PUBLIC_URL%/feed.xml">
+
+  <script type="text/javascript">
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "oxs8gogvor");
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <h1>Welcome to StockAnalyzer Pro</h1>
+    <p>You need to enable JavaScript to access our advanced stock analysis platform.</p>
+  </noscript>
+  <div id="root"></div>
+  <!--
       This is the root element where your React app will be mounted.
       The build process will bundle and inject all necessary JavaScript here.
     -->
-  </body>
+</body>
+
 </html>

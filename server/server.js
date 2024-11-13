@@ -9,6 +9,7 @@ import { authRouter } from './routes/auth.js';
 import { stockRouter } from './routes/stocks.js';
 import { watchlistRouter } from './routes/watchlist.js';
 import { verifyToken } from './middleware/auth.js';
+import { searchRoutes } from './routes/search.js';
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ const limiter = rateLimit({
 
 app.use(limiter);
 app.use('/api/auth', authRouter);
+app.use('/api/search', verifyToken, searchRoutes);
 app.use('/api/stocks', verifyToken, stockRouter);
 app.use('/api/watchlist', verifyToken, watchlistRouter);
 

@@ -1,8 +1,18 @@
-import yahooFinance from "yahoo-finance2"
+import yahooFinance from "yahoo-finance2";
 
-export default serachStock = async(req, res) => {
-    const stock = 'AAPL'
-    const results = await yahooFinance.search(stock);
-    console.log(results);
-    
-}
+export const searchData = async (query) => {
+    try {
+        const results = await yahooFinance.search(query);
+
+        return {
+            success: true,
+            data: results.quotes
+        };
+    } catch (error) {
+        console.error('Search error:', error);
+        return {
+            success: false,
+            error: error.message || 'Failed to perform search'
+        };
+    }
+};
