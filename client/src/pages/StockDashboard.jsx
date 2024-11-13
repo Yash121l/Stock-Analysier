@@ -17,7 +17,7 @@ const HISTORY_TIMEFRAMES = {
     fiveYear: { period: '5y', interval: '1d' }
 };
 
-const REFRESH_INTERVAL = 600000; // 10 minutes in milliseconds
+const REFRESH_INTERVAL = 60000; // 10 minutes in milliseconds
 
 const StockDashboard = () => {
     const { symbol } = useParams();
@@ -71,7 +71,6 @@ const StockDashboard = () => {
     useEffect(() => {
         fetchData();
 
-        // Set up auto-refresh
         const intervalId = setInterval(fetchData, REFRESH_INTERVAL);
 
         return () => clearInterval(intervalId);

@@ -13,25 +13,33 @@ export const stockQuoteData = async (req, res) => {
 export const stockHistoryData = async (req, res) => {
     try {
         const { symbol } = req.params;
-        const { period1, period2, interval } = req.query;
+        const { duration, interval } = req.query;
 
         const validIntervals = ['1d', '1wk', '1mo'];
         const intervalValue = validIntervals.includes(interval) ? interval : '1d';
 
-        const endDate = period2 ? new Date(period2) : new Date();
+        const endDate = new Date();
 
-        let startDate;
-        if (period1) {
-            startDate = new Date(period1);
+        let startDate = new Date();
+        if (duration) {
+            const durationMap = {
+                '1d': 1, '5d': 7, '1mo': 30, '3mo': 90, '6mo': 180, '1y': 365, '2y': 730, '5y': 1825
+            };
+            const days = durationMap[duration];
+            if (days) {
+                startDate.setDate(startDate.getDate() - days);
+            } else {
+                return res.status(400).json({ error: 'Invalid duration format' });
+            }
         } else {
-            startDate = new Date();
+            // Default to 1 year if no duration is provided
             startDate.setFullYear(startDate.getFullYear() - 1);
         }
 
+        // Validate dates
         if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
             return res.status(400).json({ error: 'Invalid date format' });
         }
-
         if (startDate > endDate) {
             return res.status(400).json({ error: 'Start date must be before end date' });
         }
@@ -42,8 +50,10 @@ export const stockHistoryData = async (req, res) => {
             interval: intervalValue
         };
 
+        // Fetch data from Yahoo Finance
         const result = await yahooFinance.chart(symbol, queryOptions);
 
+        // Process and send the response
         const history = {
             symbol: result.meta.symbol,
             currency: result.meta.currency,
@@ -66,4 +76,4 @@ export const stockHistoryData = async (req, res) => {
             message: error.message
         });
     }
-}
+};

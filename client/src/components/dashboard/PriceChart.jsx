@@ -194,8 +194,21 @@ const PriceChart = ({ data }) => {
                                 borderRadius: '6px',
                                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                             }}
-                            labelFormatter={formatTooltipContent}
-                            formatter={(value, name) => {
+                            labelFormatter={(data) => {
+                                if (!data.date) return data;
+                                const date = new Date(data.date);
+                                if (isNaN(date.getTime())) return "Invalid date";
+
+                                const formatOptions = {
+                                    '1D': { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true },
+                                    '1W': { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', hour12: true },
+                                    default: { month: 'long', day: 'numeric', year: 'numeric' }
+                                };
+
+                                const dateFormat = formatOptions[timeRange] || formatOptions.default;
+                                return new Intl.DateTimeFormat('en-US', dateFormat).format(date);
+                            }}
+                            formatter={(value, name, _) => {
                                 if (name === 'close') return [`$${value.toFixed(2)}`, 'Price'];
                                 if (name === 'percentChange') return [`${value.toFixed(2)}%`, 'Change'];
                                 return [value, name];

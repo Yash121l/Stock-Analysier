@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI)
 app.use(cors({
     // origin: 'https://stock-analysis.yashlunawat.com/',
     // origin: process.env.FRONTEND_URL,
-    origin:true,
+    origin: true,
     credentials: true
 }));
 
@@ -31,12 +31,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100
-});
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100
+// });
 
-app.use(limiter);
+// app.use(limiter);
 app.use('/api/auth', authRouter);
 app.use('/api/search', verifyToken, searchRoutes);
 app.use('/api/stocks', verifyToken, stockRouter);

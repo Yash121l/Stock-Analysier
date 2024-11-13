@@ -26,13 +26,14 @@ export const getStockQuote = async (symbol) => {
     }
 };
 
-export const getStockHistory = async (symbol, period = '1mo', interval = '1d') => {
+export const getStockHistory = async (symbol, duration = '1mo', interval = '1d') => {
+
     try {
         const response = await axios.get(
             `${API_URL}/stocks/history/${symbol}`,
             {
                 ...getHeaders(),
-                params: { period, interval }
+                params: { duration, interval }
             }
         );
         return response.data;
