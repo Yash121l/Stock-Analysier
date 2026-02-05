@@ -6,7 +6,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "db:create": "wrangler d1 create stock-analysier-db",
-    "db:migrate": "wrangler d1 execute stock-analysier-db --file=./schema.sql",
+    "db:migrate:prod": "wrangler d1 execute stock-analysier-db --remote --file=./schema.sql",
     "db:migrate:local": "wrangler d1 execute stock-analysier-db --local --file=./schema.sql"
   },
   "dependencies": {

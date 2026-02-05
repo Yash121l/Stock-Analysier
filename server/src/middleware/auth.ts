@@ -2,7 +2,12 @@ import { Context, Next } from 'hono';
 import * as jose from 'jose';
 import { Env } from '../types';
 
-export const verifyToken = async (c: Context<{ Bindings: Env }>, next: Next) => {
+// Define custom variables that will be set on the context
+type Variables = {
+  userId: number;
+};
+
+export const verifyToken = async (c: Context<{ Bindings: Env; Variables: Variables }>, next: Next) => {
   const authHeader = c.req.header('Authorization');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
