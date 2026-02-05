@@ -198,28 +198,18 @@ Run `npm install` in the `server` folder.
 
 ## Part 4: CI/CD with GitHub Actions
 
-The project includes automated CI/CD pipelines for both client and server deployments.
+The server uses GitHub Actions for automated CI/CD. The client is deployed directly via Cloudflare Pages Git integration.
 
 ### Required GitHub Secrets
 
 Go to your GitHub repository → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
 
-| Secret Name             | Description                                | How to Get                                                                                              |
-| ----------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| `CLOUDFLARE_API_TOKEN`  | API token with Workers & Pages permissions | [Create Token](https://dash.cloudflare.com/profile/api-tokens) → Create Token → Edit Cloudflare Workers |
-| `CLOUDFLARE_ACCOUNT_ID` | Your Cloudflare account ID                 | Dashboard URL: `dash.cloudflare.com/<ACCOUNT_ID>/...`                                                   |
-| `CF_PAGES_PROJECT_NAME` | Pages project name                         | e.g., `stock-analysier`                                                                                 |
-| `PRODUCTION_API_URL`    | Full API URL                               | e.g., `https://stock-analysier-api.yashlunawat-tech.workers.dev/api`                                    |
+| Secret Name             | Description                        | How to Get                                                                                              |
+| ----------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | API token with Workers permissions | [Create Token](https://dash.cloudflare.com/profile/api-tokens) → Create Token → Edit Cloudflare Workers |
+| `CLOUDFLARE_ACCOUNT_ID` | Your Cloudflare account ID         | Dashboard URL: `dash.cloudflare.com/<ACCOUNT_ID>/...`                                                   |
 
-### Workflow Overview
-
-**Client Pipeline** (`.github/workflows/deploy-client.yml`):
-
-- Triggers on push/PR to `main` affecting `client/**`
-- Runs lint checks and builds the React app
-- Deploys to Cloudflare Pages on push to `main`
-
-**Server Pipeline** (`.github/workflows/deploy-server.yml`):
+### Server Pipeline (`.github/workflows/deploy-server.yml`)
 
 - Triggers on push/PR to `main` affecting `server/**`
 - Runs TypeScript type checking
@@ -229,7 +219,7 @@ Go to your GitHub repository → **Settings** → **Secrets and variables** → 
 ### Manual Deployment Trigger
 
 1. Go to **Actions** tab in GitHub
-2. Select the workflow (Deploy Client or Deploy Server)
+2. Select **Deploy Server**
 3. Click **Run workflow** → Select branch → **Run workflow**
 
 ### Monitoring Deployments
