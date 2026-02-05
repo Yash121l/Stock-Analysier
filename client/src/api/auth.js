@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API URL configuration - uses environment variable or defaults
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8787/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://stock-analysier-api.yashlunawat-tech.workers.dev/api';
 
 export const login = async (email, password) => {
     try {
