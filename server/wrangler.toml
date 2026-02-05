@@ -17,5 +17,6 @@ port = 8787
 local_protocol = "http"
 
 # Production environment
+# Update FRONTEND_URL after deploying to Cloudflare Pages
 [env.production]
-vars = { FRONTEND_URL = "https://your-app.pages.dev" }
+vars = { FRONTEND_URL = "https://stock-analysier.pages.dev" }
