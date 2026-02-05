@@ -54,21 +54,6 @@ const PriceChart = ({ data }) => {
         return new Intl.DateTimeFormat('en-US', formatOptions[timeRange]).format(date);
     };
 
-    const formatTooltipContent = (dataPoint) => {
-        if (!dataPoint.date) return "No date available";
-        const date = new Date(dataPoint.date);
-        if (isNaN(date.getTime())) return "Invalid date";
-
-        const formatOptions = {
-            '1D': { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true },
-            '1W': { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', hour12: true },
-            default: { month: 'long', day: 'numeric', year: 'numeric' }
-        };
-
-        const dateFormat = formatOptions[timeRange] || formatOptions.default;
-        return new Intl.DateTimeFormat('en-US', dateFormat).format(date);
-    };
-
     const getChartDomain = useMemo(() => {
         if (!chartData.length) return { min: 0, max: 0 };
 

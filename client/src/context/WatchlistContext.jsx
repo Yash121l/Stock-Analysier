@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { getWatchlist, addToWatchlist as apiAddToWatchlist, removeFromWatchlist as apiRemoveFromWatchlist } from '../api/stocks';
 import { useAuth } from './AuthContext';
 
@@ -10,7 +10,7 @@ export const WatchlistProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const { isAuthenticated } = useAuth();
 
-    const refreshWatchlist = async () => {
+    const refreshWatchlist = useCallback(async () => {
         if (!isAuthenticated) {
             setWatchlist([]);
             return;
@@ -26,11 +26,11 @@ export const WatchlistProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [isAuthenticated]);
 
     useEffect(() => {
         refreshWatchlist();
-    }, [isAuthenticated]);
+    }, [refreshWatchlist]);
 
     const addToWatchlist = async (symbol) => {
         try {

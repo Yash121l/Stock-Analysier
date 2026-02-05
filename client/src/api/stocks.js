@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API_URL = 'https://stock-analysier.onrender.com/api';
-const API_URL = 'http://localhost:3333/api';
+// API URL configuration - uses environment variable or defaults
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8787/api';
 
 // Helper function to get headers with token
 const getHeaders = () => {
@@ -39,6 +39,18 @@ export const getStockHistory = async (symbol, duration = '1mo', interval = '1d')
         return response.data;
     } catch (error) {
         throw new Error(error.response?.data?.error || 'Failed to fetch historical data');
+    }
+};
+
+export const searchStocks = async (query) => {
+    try {
+        const response = await axios.get(
+            `${API_URL}/search/${query}`,
+            getHeaders()
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.error || 'Failed to search stocks');
     }
 };
 

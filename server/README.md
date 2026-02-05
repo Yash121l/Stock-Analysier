@@ -1,115 +1,86 @@
-# Stock Analysis Platform Backend
+# Stock Analysier API (Cloudflare Workers)
 
-## Overview
+A serverless stock analysis API built with **Hono** on **Cloudflare Workers**, using **D1** (SQLite) for the database.
 
-This is the backend for the Stock Analysis Platform, built using Express.js, MySQL, and Sequelize ORM. The platform provides a comprehensive set of features for analyzing and managing stock data.
+## Tech Stack
 
-## Features
+- **Runtime**: Cloudflare Workers
+- **Framework**: [Hono](https://hono.dev) - Fast, lightweight web framework
+- **Database**: Cloudflare D1 (SQLite)
+- **Auth**: JWT with [jose](https://github.com/panva/jose)
+- **Validation**: [Zod](https://zod.dev)
 
-- User authentication with Google OAuth (via Passport.js)
-- Management of stock quotes, historical data, and user watchlists
-- MySQL as the database with Sequelize ORM for schema definition and querying
-- JWT-based authentication for secure API access
-- Support for CRUD operations on stock data and user watchlists
+## Project Structure
 
-## Getting Started
-
-### Prerequisites
-
-Before you begin, ensure you have the following dependencies installed:
-
-- Node.js
-- npm
-- MySQL
-
-### Installation
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/your-username/stock-analysis-platform.git
-   ```
-
-2. **Install dependencies:**
-
-   ```bash
-   cd stock-analysis-platform/server
-   npm install
-   ```
-
-3. **Configure Environment Variables:**
-   Create a `.env` file in the root directory and add the following environment variables:
-
-   ```plaintext
-   DB_HOST=your_database_host
-   DB_USER=your_database_user
-   DB_PASSWORD=your_database_password
-   DB_NAME=stock_analysis_db
-   JWT_SECRET=your_jwt_secret
-   GOOGLE_CLIENT_ID=your_google_client_id
-   GOOGLE_CLIENT_SECRET=your_google_client_secret
-   ```
-
-### Running the Application
-
-To start the server, run:
-
-```bash
-npm start
 ```
-
-The API will be available at `http://localhost:<PORT>` (default port: 3001).
+server/
+├── src/
+│   ├── index.ts          # Main app entry
+│   ├── types.ts          # TypeScript types
+│   ├── middleware/
+│   │   └── auth.ts       # JWT verification
+│   ├── lib/
+│   │   ├── db.ts         # D1 database operations
+│   │   └── yahoo-finance.ts  # Stock data API
+│   └── routes/
+│       ├── auth.ts       # Auth endpoints
+│       ├── stocks.ts     # Stock data endpoints
+│       ├── search.ts     # Search endpoints
+│       └── watchlist.ts  # Watchlist endpoints
+├── schema.sql            # D1 database schema
+├── wrangler.toml         # Workers configuration
+├── package.json
+└── tsconfig.json
+```
 
 ## API Endpoints
 
-### Authentication Endpoints
+### Auth
 
-- **POST /auth/google** - Google login endpoint for user authentication.
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/logout` - Logout user
 
-### Stock Endpoints
+### Stocks (Protected)
 
-- **GET /api/stocks/quote/:symbol** - Retrieves the current quote for a given stock symbol.
-- **GET /api/stocks/history/:symbol** - Retrieves the historical data for a given stock symbol.
+- `GET /api/stocks/quote/:symbol` - Get stock quote
+- `GET /api/stocks/history/:symbol` - Get stock history
 
-### Watchlist Endpoints
+### Search (Protected)
 
-- **GET /api/watchlist** - Retrieves the user's current watchlist.
-- **POST /api/watchlist/:symbol** - Adds a stock symbol to the user's watchlist.
-- **DELETE /api/watchlist/:symbol** - Removes a stock symbol from the user's watchlist.
+- `GET /api/search/:query` - Search stocks
 
-## Database
+### Watchlist (Protected)
 
-This backend uses MySQL for database management with Sequelize ORM for defining models and relationships.
+- `GET /api/watchlist` - Get user's watchlist
+- `POST /api/watchlist/:symbol` - Add to watchlist
+- `DELETE /api/watchlist/:symbol` - Remove from watchlist
 
-### Database Models
-
-1. **User Model**: Manages user details, including Google OAuth fields.
-2. **Stock Model**: Stores stock quote and historical data.
-3. **Watchlist Model**: Connects users to the stocks they have added to their watchlist.
-
-## Middleware
-
-- **authenticateUser**: Validates JWT for API access and assigns `req.user` with the authenticated user's information.
-- **errorHandler**: Centralized error handler to catch and return standardized error responses.
-
-## Testing
-
-To run the tests for this backend, use the following command:
+## Development
 
 ```bash
-npm test
+# Install dependencies
+npm install
+
+# Start local development server
+npm run dev
 ```
 
-## Future Enhancements
+## Deployment
 
-- Integration with external financial data APIs for more comprehensive stock data.
-- Implement real-time stock price updates using WebSockets.
-- Add support for portfolio management and performance tracking.
+See [DEPLOYMENT.md](../DEPLOYMENT.md) for complete deployment instructions.
 
-## Contributing
+```bash
+# Quick deploy
+npm run deploy
+```
 
-Contributions are welcome! Please submit pull requests or open issues for suggestions or bug reports.
+## Environment Variables
 
-## Frontend Repository
+Set via `wrangler secret`:
 
-[Frontend Implementation](https://github.com/your-username/stock-analysis-platform/tree/main/client)
+- `JWT_SECRET` - Secret for JWT signing
+
+Set via `wrangler.toml`:
+
+- `FRONTEND_URL` - Frontend URL for CORS

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, TrendingUp } from 'lucide-react';
+import { Search, TrendingUp, Loader2 } from 'lucide-react';
+import { searchStocks } from '../api/stocks';
 
 const SearchPage = () => {
     const [symbol, setSymbol] = useState('');
@@ -15,23 +16,10 @@ const SearchPage = () => {
                 setSuggestions([]);
                 return;
             }
-            const getHeaders = () => {
-                const token = localStorage.getItem('token');
-                return {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    },
-                    withCredentials: true
-                };
-            };
 
             setIsLoading(true);
             try {
-                // const response = await fetch(`https://stock-analysier.onrender.com/api/search/${symbol}`,
-                const response = await fetch(`http://localhost:3333/api/search/${symbol}`,
-                    getHeaders()
-                );
-                const data = await response.json();
+                const data = await searchStocks(symbol);
                 if (data.success) {
                     setSuggestions(data.data.filter(item => item.symbol));
                 }
@@ -80,6 +68,9 @@ const SearchPage = () => {
                         className="w-full px-4 py-3 pl-12 text-lg rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                     />
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-5 w-5" />
+                    {isLoading && (
+                        <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-500 h-5 w-5 animate-spin" />
+                    )}
                 </div>
 
                 {showSuggestions && suggestions.length > 0 && (

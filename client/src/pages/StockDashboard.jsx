@@ -122,9 +122,6 @@ const StockDashboard = () => {
         );
     }
 
-    // Get the latest data point from daily history
-    const latestDailyData = data.histories.daily.data[data.histories.daily.data.length - 1] || {};
-
     // Transform historical data for PriceChart
     const chartData = {
         daily: data.histories.daily.data,
@@ -162,9 +159,12 @@ const StockDashboard = () => {
                         metrics={{
                             marketCap: data.quote.marketCap,
                             volume: data.quote.regularMarketVolume,
-                            dayHigh: latestDailyData.high || 0,
-                            dayLow: latestDailyData.low || 0,
-                            open: data.histories.daily.data[0]?.open || 0,
+                            dayHigh: data.quote.regularMarketDayHigh,
+                            dayLow: data.quote.regularMarketDayLow,
+                            open: data.quote.regularMarketOpen,
+                            previousClose: data.quote.regularMarketPreviousClose,
+                            fiftyTwoWeekHigh: data.quote.fiftyTwoWeekHigh,
+                            fiftyTwoWeekLow: data.quote.fiftyTwoWeekLow,
                         }}
                     />
                     <VolumeChart data={data.histories.monthly.data} />

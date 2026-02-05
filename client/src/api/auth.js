@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API_URL = 'https://stock-analysier.onrender.com/api';
-const API_URL = 'http://localhost:3333/api';
+// API URL configuration - uses environment variable or defaults
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8787/api';
 
 export const login = async (email, password) => {
     try {

@@ -1,28 +1,22 @@
 {
-  "name": "server",
+  "name": "stock-analysier-api",
   "version": "1.0.0",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create stock-analysier-db",
+    "db:migrate": "wrangler d1 execute stock-analysier-db --file=./schema.sql",
+    "db:migrate:local": "wrangler d1 execute stock-analysier-db --local --file=./schema.sql"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
-    "express-rate-limit": "^7.4.1",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.1",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.1.7",
-    "yahoo-finance2": "^2.13.2",
-    "zod": "^3.23.8"
+    "hono": "^4.0.0",
+    "jose": "^5.2.0",
+    "zod": "^3.23.8",
+    "@cloudflare/workers-types": "^4.20240129.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.22.0",
+    "typescript": "^5.3.0"
   }
 }
