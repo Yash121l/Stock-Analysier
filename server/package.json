@@ -10,9 +10,9 @@
     "db:migrate:local": "wrangler d1 execute stock-analysier-db --local --file=./schema.sql"
   },
   "dependencies": {
-    "hono": "^4.0.0",
-    "jose": "^5.2.0",
-    "zod": "^3.23.8",
+    "hono": "^4.11.9",
+    "jose": "^6.1.3",
+    "zod": "^4.3.6",
     "@cloudflare/workers-types": "^4.20240129.0"
   },
   "devDependencies": {
