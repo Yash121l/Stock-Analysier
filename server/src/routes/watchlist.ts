@@ -3,6 +3,7 @@ import { Env } from '../types';
 import { verifyToken } from '../middleware/auth';
 import { getWatchlist, addToWatchlist, removeFromWatchlist } from '../lib/db';
 import { getQuoteForWatchlist } from '../lib/yahoo-finance';
+import { captureEvent } from '../lib/analytics';
 
 const watchlist = new Hono<{ Bindings: Env; Variables: { userId: number } }>();
 
@@ -34,6 +35,7 @@ watchlist.post('/:symbol', async (c) => {
     const symbol = c.req.param('symbol');
     
     await addToWatchlist(c.env.DB, userId, symbol);
+    captureEvent(c, 'watchlist_updated', userId, { action: 'add', symbol: symbol.toUpperCase() });
     return c.json({ message: 'Added to watchlist' });
   } catch (error) {
     console.error('Add to watchlist error:', error);
@@ -48,6 +50,7 @@ watchlist.delete('/:symbol', async (c) => {
     const symbol = c.req.param('symbol');
     
     await removeFromWatchlist(c.env.DB, userId, symbol);
+    captureEvent(c, 'watchlist_updated', userId, { action: 'remove', symbol: symbol.toUpperCase() });
     return c.json({ message: 'Removed from watchlist' });
   } catch (error) {
     console.error('Remove from watchlist error:', error);

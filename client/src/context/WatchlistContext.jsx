@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { getWatchlist, addToWatchlist as apiAddToWatchlist, removeFromWatchlist as apiRemoveFromWatchlist } from '../api/stocks';
 import { useAuth } from './AuthContext';
+import { track } from '../analytics';
 
 const WatchlistContext = createContext(undefined);
 
@@ -35,6 +36,7 @@ export const WatchlistProvider = ({ children }) => {
     const addToWatchlist = async (symbol) => {
         try {
             await apiAddToWatchlist(symbol);
+            track('watchlist_stock_added', { symbol, watchlist_size: watchlist.length + 1 });
             await refreshWatchlist();
         } catch (err) {
             throw err;
@@ -44,6 +46,7 @@ export const WatchlistProvider = ({ children }) => {
     const removeFromWatchlist = async (symbol) => {
         try {
             await apiRemoveFromWatchlist(symbol);
+            track('watchlist_stock_removed', { symbol, watchlist_size: Math.max(0, watchlist.length - 1) });
             await refreshWatchlist();
         } catch (err) {
             throw err;

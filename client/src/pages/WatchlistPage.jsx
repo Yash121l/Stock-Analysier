@@ -75,7 +75,7 @@ const WatchlistPage = () => {
                     <div
                         key={stock.symbol}
                         className="bg-white dark:bg-gray-800 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
-                        onClick={() => navigate(`/stock/${stock.symbol}`)}
+                        onClick={() => navigate(`/stock/${stock.symbol}`, { state: { source: 'watchlist' } })}
                     >
                         <div className="flex items-center justify-between">
                             <div>

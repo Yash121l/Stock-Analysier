@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { getStockQuote, getStockHistory } from '../api/stocks';
 import StockHeader from '../components/dashboard/StockHeader';
@@ -7,6 +7,7 @@ import KeyMetrics from '../components/dashboard/KeyMetrics';
 import PriceChart from '../components/dashboard/PriceChart';
 import VolumeChart from '../components/dashboard/VolumeChart';
 import WatchlistButton from '../components/dashboard/WatchlistButton';
+import { track } from '../analytics';
 
 const HISTORY_TIMEFRAMES = {
     daily: { period: '1d', interval: '5m' },
@@ -22,6 +23,9 @@ const REFRESH_INTERVAL = 60000; // 10 minutes in milliseconds
 const StockDashboard = () => {
     const { symbol } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const source = location.state?.source || 'direct';
+    const trackedSymbol = useRef(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState(null);
@@ -33,6 +37,7 @@ const StockDashboard = () => {
             return;
         }
 
+        const startedAt = Date.now();
         try {
             setError(null);
 
@@ -60,13 +65,27 @@ const StockDashboard = () => {
                     fiveYear
                 }
             });
+
+            // Only the first successful load per symbol counts; the 60s auto-refresh does not.
+            if (trackedSymbol.current !== symbol) {
+                trackedSymbol.current = symbol;
+                track('stock_viewed', {
+                    symbol: symbol.toUpperCase(),
+                    source,
+                    load_ms: Date.now() - startedAt
+                });
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Failed to fetch stock data');
+            track('stock_load_failed', {
+                symbol: symbol.toUpperCase(),
+                error: err instanceof Error ? err.message : String(err)
+            });
             console.error('Stock data fetch error:', err);
         } finally {
             setLoading(false);
         }
-    }, [symbol]);
+    }, [symbol, source]);
 
     useEffect(() => {
         fetchData();
@@ -170,7 +189,7 @@ const StockDashboard = () => {
                     <VolumeChart data={data.histories.monthly.data} />
                 </div>
 
-                <PriceChart data={chartData} />
+                <PriceChart data={chartData} symbol={symbol} />
             </div>
         </div>
     );

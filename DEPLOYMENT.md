@@ -146,12 +146,14 @@ npm run deploy
 | Variable       | Description           |
 | -------------- | --------------------- |
 | `FRONTEND_URL` | Frontend URL for CORS |
+| `POSTHOG_KEY`  | PostHog public project key (committed) for server-side events |
 
 ### Pages (via .env.production)
 
 | Variable            | Description     |
 | ------------------- | --------------- |
 | `REACT_APP_API_URL` | Backend API URL |
+| `REACT_APP_POSTHOG_KEY` | PostHog public project key (committed); analytics only run in production builds |
 
 ---
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, TrendingUp, Loader2 } from 'lucide-react';
 import { searchStocks } from '../api/stocks';
+import { track } from '../analytics';
 
 const SearchPage = () => {
     const [symbol, setSymbol] = useState('');
@@ -21,7 +22,9 @@ const SearchPage = () => {
             try {
                 const data = await searchStocks(symbol);
                 if (data.success) {
-                    setSuggestions(data.data.filter(item => item.symbol));
+                    const results = data.data.filter(item => item.symbol);
+                    setSuggestions(results);
+                    track('stock_searched', { query: symbol.trim().toUpperCase(), result_count: results.length });
                 }
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
@@ -37,12 +40,12 @@ const SearchPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (symbol.trim()) {
-            navigate(`/stock/${symbol.toUpperCase()}`);
+            navigate(`/stock/${symbol.toUpperCase()}`, { state: { source: 'search_submit' } });
         }
     };
 
     const handleSuggestionClick = (suggestion) => {
-        navigate(`/stock/${suggestion.symbol}`);
+        navigate(`/stock/${suggestion.symbol}`, { state: { source: 'search_suggestion' } });
     };
 
     return (
@@ -111,7 +114,7 @@ const SearchPage = () => {
                 {['AAPL', 'GOOGL', 'MSFT'].map((stock) => (
                     <div
                         key={stock}
-                        onClick={() => navigate(`/stock/${stock}`)}
+                        onClick={() => navigate(`/stock/${stock}`, { state: { source: 'popular' } })}
                         className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                     >
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{stock}</h3>
