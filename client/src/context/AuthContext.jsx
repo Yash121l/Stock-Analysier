@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { login as apiLogin, register as apiRegister, logout as apiLogout } from '../api/auth';
+import { identifyUser, resetUser, track } from '../analytics';
 
 const AuthContext = createContext(undefined);
 
@@ -9,7 +10,9 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            await apiLogin(email, password);
+            const { token } = await apiLogin(email, password);
+            identifyUser(token, email);
+            track('login_completed');
             setIsAuthenticated(true);
             setUser({ email });
         } catch (error) {
@@ -19,7 +22,9 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (email, password) => {
         try {
-            await apiRegister(email, password);
+            const { token } = await apiRegister(email, password);
+            identifyUser(token, email);
+            track('signup_completed');
             setIsAuthenticated(true);
             setUser({ email });
         } catch (error) {
@@ -30,6 +35,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             await apiLogout();
+            resetUser();
             setIsAuthenticated(false);
             setUser(null);
         } catch (error) {

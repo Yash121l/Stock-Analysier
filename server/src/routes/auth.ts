@@ -3,6 +3,7 @@ import * as jose from 'jose';
 import { z } from 'zod';
 import { Env } from '../types';
 import { findUserByEmail, createUser, hashPassword, verifyPassword } from '../lib/db';
+import { captureEvent } from '../lib/analytics';
 
 const auth = new Hono<{ Bindings: Env }>();
 
@@ -52,7 +53,9 @@ auth.post('/register', async (c) => {
     
     // Create token
     const token = await createToken(user.id, c.env.JWT_SECRET);
-    
+
+    captureEvent(c, 'user_registered', user.id, { $set: { email } });
+
     return c.json({ message: 'Registration successful', token }, 201);
   } catch (error) {
     console.error('Register error:', error);
@@ -75,12 +78,14 @@ auth.post('/login', async (c) => {
     // Find user
     const user = await findUserByEmail(c.env.DB, email);
     if (!user) {
+      captureEvent(c, 'login_failed', null, { reason: 'unknown_email' });
       return c.json({ error: 'Invalid credentials' }, 401);
     }
     
     // Verify password
     const isMatch = await verifyPassword(password, user.password);
     if (!isMatch) {
+      captureEvent(c, 'login_failed', null, { reason: 'wrong_password' });
       return c.json({ error: 'Invalid credentials' }, 401);
     }
     

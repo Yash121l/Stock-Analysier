@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { Env } from '../types';
 import { verifyToken } from '../middleware/auth';
 import { getQuote, getHistory } from '../lib/yahoo-finance';
+import { captureEvent } from '../lib/analytics';
 
 const stocks = new Hono<{ Bindings: Env; Variables: { userId: number } }>();
 
@@ -16,6 +17,11 @@ stocks.get('/quote/:symbol', async (c) => {
     return c.json(quote);
   } catch (error) {
     console.error('Quote error:', error);
+    captureEvent(c, 'market_data_failed', c.get('userId'), {
+      endpoint: 'quote',
+      symbol: c.req.param('symbol').toUpperCase(),
+      error: error instanceof Error ? error.message : String(error),
+    });
     return c.json({ error: 'Failed to fetch stock data' }, 500);
   }
 });
@@ -31,6 +37,11 @@ stocks.get('/history/:symbol', async (c) => {
     return c.json(history);
   } catch (error) {
     console.error('History error:', error);
+    captureEvent(c, 'market_data_failed', c.get('userId'), {
+      endpoint: 'history',
+      symbol: c.req.param('symbol').toUpperCase(),
+      error: error instanceof Error ? error.message : String(error),
+    });
     return c.json({ error: 'Failed to fetch historical data' }, 500);
   }
 });

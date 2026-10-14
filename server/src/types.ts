@@ -29,6 +29,8 @@ export interface Env {
   DB: D1Database;
   JWT_SECRET: string;
   FRONTEND_URL: string;
+  POSTHOG_KEY?: string;
+  POSTHOG_CAPTURE_LOCAL?: string;
 }
 
 export interface User {

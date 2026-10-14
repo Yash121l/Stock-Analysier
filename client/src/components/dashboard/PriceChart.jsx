@@ -8,10 +8,11 @@ import {
     Tooltip,
     ResponsiveContainer
 } from 'recharts';
+import { track } from '../../analytics';
 
 const TimeRanges = ['1D', '1W', '1M', '3M', '1Y', '5Y'];
 
-const PriceChart = ({ data }) => {
+const PriceChart = ({ data, symbol }) => {
     const [timeRange, setTimeRange] = useState('1M');
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -117,7 +118,10 @@ const PriceChart = ({ data }) => {
                     {TimeRanges.map((range) => (
                         <button
                             key={range}
-                            onClick={() => setTimeRange(range)}
+                            onClick={() => {
+                                if (range !== timeRange) track('chart_range_changed', { symbol, range, previous_range: timeRange });
+                                setTimeRange(range);
+                            }}
                             className={`px-3 py-1 rounded text-sm font-medium transition-colors ${timeRange === range
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
